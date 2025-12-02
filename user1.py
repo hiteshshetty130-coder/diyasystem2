@@ -1,7 +1,9 @@
 import requests
 import json
 import pandas as pd
+import logging
 
+logging.basicConfig(level=logging.INFO)
 
 def main():
     retry = 3
@@ -11,7 +13,7 @@ def main():
             file_path = "data.csv"
             response = requests.get(url)
 
-            with open(file_path, "wb") as f:
+            with open(file_path, "wb") as f:  #writes the google drive url content in csv file
                 f.write(response.content)
 
             if not file_path.endswith(".csv"):
@@ -20,25 +22,27 @@ def main():
 
             df = pd.read_csv("data.csv")
             df = df.rename(columns={"User Id": "Employee ID", "Phone": "Phone Number"})
-            df = df[["Employee ID", "First Name", "Last Name", "Email",
+            df = df[["Employee ID", "First Name", "Last Name", "Email",     
                      "Job Title", "Phone Number", "Date of birth"]]
 
             file_path2 = "output.csv"
             df.to_csv(file_path2)
-            print(df)
+            logging.info("\n%s",df)           
             return df,"data.csv"
             break
 
+
+            #error handling
         except requests.exceptions.HTTPError as e:
-            print("Sorry! file Download failed:", e)
+            logging.error("Sorry! file Download failed:", e)
 
         except Exception as e:
-            print("Sorry Error!",e)
+            logging.error("Sorry Error!",e)
 
         if attempts == retry:
-            print("Sorry Maximum limit reached!")
+            logging.error("Sorry Maximum limit reached!")
         else:
-            print("Retrying.....")
+            logging.error("Retrying.....")
 
 
 if __name__ == "__main__":

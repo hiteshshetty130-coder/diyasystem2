@@ -6,6 +6,7 @@ import pandas as pd
 
 
 class TestCsvFileDownload(unittest.TestCase):
+    #Test case 1: verify csv file download
     @patch("user1.requests.get")
     def test_main1(self,mock_get):
         mock_data=b"User Id,First Name,Last Name,Sex,Email,Phone,Date of birth,Job Title\n1,8717bbf45cCDbEe,Shelia,Mahoney,Male,pwarner@example.org,857.139.8239,2014-01-27,Probation officer"
@@ -20,6 +21,7 @@ class TestCsvFileDownload(unittest.TestCase):
         self.assertTrue(os.path.exists(file_path))
 
     @patch("user1.requests.get")
+    #Test case 2: validate csv file extraction
     def test_main2(self,mock_get):
         mock_data = b"User Id,First Name,Last Name,Sex,Email,Phone,Date of birth,Job Title\n1,8717bbf45cCDbEe,Shelia,Mahoney,Male,pwarner@example.org,857.139.8239,2014-01-27,Probation officer"
         mock_response=Mock()
@@ -33,6 +35,7 @@ class TestCsvFileDownload(unittest.TestCase):
         self.assertTrue(file_path.endswith(".csv"))
 
     @patch("user1.requests.get")
+    #test case 3:verify file type and format
     def test_main3(self,mock_get):
         mock_data = b"User Id,First Name,Last Name,Sex,Email,Phone,Date of birth,Job Title\n1,8717bbf45cCDbEe,Shelia,Mahoney,Male,pwarner@example.org,857.139.8239,2014-01-27,Probation officer"
         mock_response = Mock()
@@ -54,6 +57,7 @@ class TestCsvFileDownload(unittest.TestCase):
             self.fail("Exception Occurred ",e)
 
     @patch("user1.requests.get")
+    #test case 4:validate data structure
     def test_main4(self,mock_get):
         mock_data = b"User Id,First Name,Last Name,Sex,Email,Phone,Date of birth,Job Title\n1,8717bbf45cCDbEe,Shelia,Mahoney,Male,pwarner@example.org,857.139.8239,2014-01-27,Probation officer"
         mock_response=Mock()
@@ -69,6 +73,7 @@ class TestCsvFileDownload(unittest.TestCase):
             self.assertIn(col,df.columns)
 
     @patch("user1.requests.get")
+    #test case 5:handle missing and invalid data
     def test_main5(self, mock_get):
         mock_data = b"User Id,First Name,Last Name,Sex,Email,Phone,Date of birth,Job Title\n1,8717bbf45cCDbEe,Shelia,Mahoney,Male,pwarner@example.org,857.139.8239,2014-01-27,Probation officer"
         mock_response = Mock()
